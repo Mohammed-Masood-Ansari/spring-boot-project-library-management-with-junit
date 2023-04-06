@@ -12,50 +12,49 @@ import com.jsp.librarymanagementsystemspringboot.repository.BookIssueRepository;
 import com.jsp.librarymanagementsystemspringboot.repository.BookRepository;
 
 @Repository
-public class BookDao {
+public class BookIssueDao {
 
 	@Autowired
-	BookRepository bookRepository;
+	private BookIssueRepository bookIssueRepository;
+
+	@Autowired
+	private BookRepository bookRepository;
 	
 	@Autowired
-	BookIssueRepository bookIssueRepository;
+	private BookDao bookDao;
 	
 	@Autowired
-	StudentDao studentDao;
+	private StudentDao studentDao;
 	
 	@Autowired
-	BookIssue bookIssue;
-	
-	public void saveBook(Book book) {
-		
-		bookRepository.save(book);
-	}
-	
+	private BookIssue bookIssue;
 	/*
-	 * getBookById method
+	 * BookIssue Save Method
 	 */
-	public Book getBookById(int bookId) {
-		return bookRepository.findById(bookId).get();
-	}
-	
-	/*
-	 * update book to set student inside book
-	 */
-	public Book updateBookWithStudentId(int studentId,int BookId) {
-		
-		Book book=getBookById(BookId);
-		
+	public BookIssue saveBookIssue(int studentId, int BookId) {
+
+		Book book = bookDao.getBookById(BookId);
+
 		Student student = studentDao.getStudentById(studentId);
-		
-		if((student!=null)&&(book!=null)) {
+
+		LocalDate localDate = LocalDate.now();
+
+		localDate = localDate.plusDays(10);
+
+		if ((student != null) && (book != null)) {
 			
-			book.setStudent(student);
+			//bookIssue.setBookIssueId(BookId);
 			
-			bookRepository.save(book);
+			bookIssue.setStudent(student);
+
+			bookIssue.setBook(book);
+
+			bookIssue.setBookSubmissionDate(localDate);
 			
-			return book;
-			
-		}else {
+			bookIssueRepository.save(bookIssue);
+
+			return bookIssue;
+		} else {
 			return null;
 		}
 	}

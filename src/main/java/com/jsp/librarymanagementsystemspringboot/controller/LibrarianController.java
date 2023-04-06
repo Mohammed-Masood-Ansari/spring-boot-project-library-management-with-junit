@@ -60,4 +60,15 @@ public class LibrarianController {
 		}
 		return null;
 	}
+	
+	/*
+	 * librarian-Logout
+	 */
+	@GetMapping("/librarianLogout")
+	public String logoutLibrarian() {
+		
+		httpSession.invalidate();
+		
+		return "librarian-logout-successfully!!!!!";
+	}
 }

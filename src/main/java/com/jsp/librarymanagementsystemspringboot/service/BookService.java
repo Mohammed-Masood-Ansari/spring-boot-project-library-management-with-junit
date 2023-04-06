@@ -16,30 +16,70 @@ public class BookService {
 
 	@Autowired
 	HttpServletRequest httpServletRequest;
-	
+
 	@Autowired
 	HttpSession httpSession;
-	
+
 	@Autowired
 	BookDao bookDao;
-	
+
 	@Autowired
 	ResponseStructure<Book> responseStructure;
-	
-	public ResponseStructure<Book> saveBook(Book book){
-		
-		if(httpSession.getAttribute("")!=null) {
+
+	/*
+	 * Save book methods
+	 */
+	public ResponseStructure<Book> saveBook(Book book) {
+
+		if (httpSession.getAttribute("librarianEmail") != null) {
 			responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 			responseStructure.setMsg("Book-Added-Successfully");
 			responseStructure.setData(book);
 			bookDao.saveBook(book);
 			return responseStructure;
-		}else {
+		} else {
 			responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
 			responseStructure.setMsg("Data-Not-Added");
 			responseStructure.setMsg("Please-Login-With-Librarian-Then-Add");
 			responseStructure.setData(null);
 			return responseStructure;
 		}
+	}
+
+	/*
+	 * getBookById method 
+	 */
+	public ResponseStructure<Book> getBookById(int bookId) {
+
+		if (httpSession.getAttribute("librarianEmail") != null) {
+			
+			Book book=bookDao.getBookById(bookId);
+			
+			if(book!=null) {
+				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+				responseStructure.setMsg("Book-is-Present");
+				responseStructure.setData(book);
+				return responseStructure;
+			}else {
+				responseStructure.setStatusCode(HttpStatus.NO_CONTENT.value());
+				responseStructure.setMsg("Given-Book-is-not-present");
+				responseStructure.setData(book);
+				return responseStructure;
+			}
+			
+		} else {
+			responseStructure.setStatusCode(HttpStatus.BAD_REQUEST.value());
+			responseStructure.setMsg("Data-Not-Available");
+			responseStructure.setMsg("Please-Login-With-Librarian-Then-Add");
+			responseStructure.setData(null);
+			return responseStructure;
+		}
+	}
+	
+	/*
+	 * update book to set student inside book
+	 */
+	public Book updateBookWithStudentId(int studentId,int BookId) {
+		return bookDao.updateBookWithStudentId(studentId, BookId);
 	}
 }

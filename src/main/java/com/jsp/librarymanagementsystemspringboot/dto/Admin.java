@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "mainadmin")
 public class Admin {
-
+	
 	@Id
 	@Column(name = "adminid")
 	private int adminId;
@@ -26,7 +26,5 @@ public class Admin {
 	private String adminEmail;
 	@Column(name = "adminphone")
 	private String adminPhone;
-
-	
 
 }

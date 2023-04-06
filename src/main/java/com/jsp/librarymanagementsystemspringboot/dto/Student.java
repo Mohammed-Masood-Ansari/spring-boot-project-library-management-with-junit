@@ -2,6 +2,7 @@ package com.jsp.librarymanagementsystemspringboot.dto;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -18,12 +19,16 @@ import lombok.NoArgsConstructor;
 public class Student {
 
 	@Id
+	@Column(name = "studentid")
 	private int studentId;
+	@Column(name = "studentname")
 	private String studentName;
+	@Column(name = "studentemail")
 	private String studentEmail;
+	@Column(name = "studentphone")
 	private long studentPhone;
 	
-	@OneToMany
+	@OneToMany(mappedBy = "student")
 	private List<Book> books;
 	
 }
