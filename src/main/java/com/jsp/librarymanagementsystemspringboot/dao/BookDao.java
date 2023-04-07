@@ -35,7 +35,9 @@ public class BookDao {
 	 * getBookById method
 	 */
 	public Book getBookById(int bookId) {
+		
 		return bookRepository.findById(bookId).get();
+		
 	}
 	
 	/*

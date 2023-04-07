@@ -56,4 +56,35 @@ public class BookIssueService {
 		}
 
 	}
+	
+	/*
+	 * submitbook that student has taken before
+	 */
+	public ResponseStructure<BookIssue> submitIssuedBook(int bookId, int studentId) {
+		
+		if (httpSession.getAttribute("librarianEmail") != null) {
+
+			BookIssue bookIssue = bookIssueDao.submitIssuedBook(bookId,studentId);
+			
+			if(bookIssue!=null) {
+				
+				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+				responseStructure.setMsg("Book....BookSubmitted...Successfully....");
+				responseStructure.setData(bookIssue);
+				return responseStructure;
+			}else {
+				responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+				responseStructure.setMsg("Book..is...not..submitted...Please..Check..it.");
+				responseStructure.setData(null);
+				return responseStructure;
+			}
+			
+		}else {
+			responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+			responseStructure.setMsg("Please....Loggedin...with...librarian...");
+			responseStructure.setData(null);
+			return responseStructure;
+		}
+
+	}
 }

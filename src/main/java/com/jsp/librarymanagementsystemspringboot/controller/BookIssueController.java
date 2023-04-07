@@ -1,8 +1,10 @@
 package com.jsp.librarymanagementsystemspringboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jsp.librarymanagementsystemspringboot.dto.BookIssue;
@@ -26,5 +28,14 @@ public class BookIssueController {
 		
 	  return bookIssueService.updateBookWithStudentId(studentId, BookId);
 		
+	}
+	
+	/*
+	 * submitbook that student has taken before
+	 */
+	@DeleteMapping(value = "/submitBook/{bookId}/{studentId}")
+	public ResponseStructure<BookIssue> submitIssuedBook(@PathVariable int bookId,@PathVariable int studentId) {
+		
+		return bookIssueService.submitIssuedBook(bookId,studentId);
 	}
 }

@@ -1,10 +1,12 @@
 package com.jsp.librarymanagementsystemspringboot.dao;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.jayway.jsonpath.Option;
 import com.jsp.librarymanagementsystemspringboot.dto.Book;
 import com.jsp.librarymanagementsystemspringboot.dto.BookIssue;
 import com.jsp.librarymanagementsystemspringboot.dto.Student;
@@ -19,21 +21,22 @@ public class BookIssueDao {
 
 	@Autowired
 	private BookRepository bookRepository;
-	
+
 	@Autowired
 	private BookDao bookDao;
-	
+
 	@Autowired
 	private StudentDao studentDao;
-	
+
 	@Autowired
 	private BookIssue bookIssue;
+
 	/*
 	 * BookIssue Save Method
 	 */
-	public BookIssue saveBookIssue(int studentId, int BookId) {
+	public BookIssue saveBookIssue(int studentId, int bookId) {
 
-		Book book = bookDao.getBookById(BookId);
+		Book book = bookDao.getBookById(bookId);
 
 		Student student = studentDao.getStudentById(studentId);
 
@@ -42,20 +45,73 @@ public class BookIssueDao {
 		localDate = localDate.plusDays(10);
 
 		if ((student != null) && (book != null)) {
-			
-			//bookIssue.setBookIssueId(BookId);
-			
+
+			bookIssue.setBookIssueId(bookId);
+
 			bookIssue.setStudent(student);
 
 			bookIssue.setBook(book);
 
 			bookIssue.setBookSubmissionDate(localDate);
-			
+
 			bookIssueRepository.save(bookIssue);
 
 			return bookIssue;
 		} else {
 			return null;
 		}
+	}
+
+	/*
+	 * submit the book issued by librarian
+	 */
+	public BookIssue submitIssuedBook(int bookId, int studentId) {
+
+		Book book = bookDao.getBookById(bookId);
+
+		Student student = studentDao.getStudentById(studentId);
+
+		if ((student != null) && (book != null)) {
+
+			Optional<BookIssue> optional = bookIssueRepository.findById(book.getBookNumber());
+
+			if (optional.isPresent()) {
+				bookIssueRepository.delete(bookIssue);
+				return bookIssue;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+	}
+
+	/*
+	 * check the fine for late submission
+	 */
+	public BookIssue checkFineForLateSubmission(int bookId, int studentId) {
+
+		Book book = bookDao.getBookById(bookId);
+
+		Student student = studentDao.getStudentById(studentId);
+
+		if ((student != null) && (book != null)) {
+
+			Optional<BookIssue> optional = bookIssueRepository.findById(book.getBookNumber());
+			
+			if (optional.isPresent()) {
+				
+				BookIssue bookIssue = optional.get();
+				
+				
+				
+				return bookIssue;
+			} else {
+				return null;
+			}
+		} else {
+			return null;
+		}
+
 	}
 }
