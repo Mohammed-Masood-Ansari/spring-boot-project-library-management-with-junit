@@ -35,20 +35,20 @@ public class BookIssueService {
 
 			BookIssue bookIssue = bookIssueDao.saveBookIssue(studentId, BookId);
 
-			if(bookIssue!=null) {
-				
+			if (bookIssue != null) {
+
 				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 				responseStructure.setMsg("Book....Issued...Successfully....");
 				responseStructure.setData(bookIssue);
 				return responseStructure;
-			}else {
+			} else {
 				responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
 				responseStructure.setMsg("Book..is...not..Issued...Please..Check..it.");
 				responseStructure.setData(null);
 				return responseStructure;
 			}
-			
-		}else {
+
+		} else {
 			responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
 			responseStructure.setMsg("Please....Loggedin...with...librarian...");
 			responseStructure.setData(null);
@@ -56,35 +56,65 @@ public class BookIssueService {
 		}
 
 	}
-	
+
 	/*
 	 * submitbook that student has taken before
 	 */
 	public ResponseStructure<BookIssue> submitIssuedBook(int bookId, int studentId) {
-		
+
 		if (httpSession.getAttribute("librarianEmail") != null) {
 
-			BookIssue bookIssue = bookIssueDao.submitIssuedBook(bookId,studentId);
-			
-			if(bookIssue!=null) {
-				
+			BookIssue bookIssue = bookIssueDao.submitIssuedBook(bookId, studentId);
+
+			if (bookIssue != null) {
+
 				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
 				responseStructure.setMsg("Book....BookSubmitted...Successfully....");
 				responseStructure.setData(bookIssue);
 				return responseStructure;
-			}else {
+			} else {
 				responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
 				responseStructure.setMsg("Book..is...not..submitted...Please..Check..it.");
 				responseStructure.setData(null);
 				return responseStructure;
 			}
-			
-		}else {
+
+		} else {
 			responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
 			responseStructure.setMsg("Please....Loggedin...with...librarian...");
 			responseStructure.setData(null);
 			return responseStructure;
 		}
 
+	}
+
+	/*
+	 * check the fine for late submission
+	 */
+	public ResponseStructure<BookIssue> checkFineForLateSubmission(int bookId, int studentId) {
+		
+		if (httpSession.getAttribute("librarianEmail") != null) {
+
+			BookIssue bookIssue = bookIssueDao.checkFineForLateSubmission(bookId, studentId);
+
+			if (bookIssue != null) {
+
+				responseStructure.setStatusCode(HttpStatus.ACCEPTED.value());
+				responseStructure.setMsg("The Fine Details are Below");
+				responseStructure.setData(bookIssue);
+				return responseStructure;
+			} else {
+				responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+				responseStructure.setMsg("The fine details are not available please check it");
+				responseStructure.setData(null);
+				return responseStructure;
+			}
+
+		} else {
+			responseStructure.setStatusCode(HttpStatus.NOT_ACCEPTABLE.value());
+			responseStructure.setMsg("Please....Loggedin...with...librarian...");
+			responseStructure.setData(null);
+			return responseStructure;
+		}
 	}
 }

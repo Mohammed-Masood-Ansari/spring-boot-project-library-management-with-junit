@@ -98,13 +98,23 @@ public class BookIssueDao {
 		if ((student != null) && (book != null)) {
 
 			Optional<BookIssue> optional = bookIssueRepository.findById(book.getBookNumber());
-			
+
 			if (optional.isPresent()) {
-				
+
 				BookIssue bookIssue = optional.get();
-				
-				
-				
+
+				LocalDate submissionDate = bookIssue.getBookSubmissionDate();
+
+				int subDateValue = submissionDate.getDayOfMonth();
+
+				int todayDateValue = LocalDate.now().getDayOfMonth();
+
+				if (todayDateValue > subDateValue) {
+					int finalDateValue = todayDateValue - subDateValue;
+					bookIssue.setFine(finalDateValue);
+				}
+				bookIssue.setBookSubmitDate(LocalDate.now());
+				bookIssueRepository.save(bookIssue);
 				return bookIssue;
 			} else {
 				return null;

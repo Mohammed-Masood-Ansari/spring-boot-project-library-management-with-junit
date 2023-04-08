@@ -38,4 +38,13 @@ public class BookIssueController {
 		
 		return bookIssueService.submitIssuedBook(bookId,studentId);
 	}
+	
+	/*
+	 * check the fine for late submission
+	 */
+	@PutMapping(value = "/checkFine/{bookId}/{studentId}")
+	public ResponseStructure<BookIssue> checkFineForLateSubmission(@PathVariable int bookId,@PathVariable int studentId) {
+		
+		return bookIssueService.checkFineForLateSubmission(bookId, studentId);
+	}
 }
