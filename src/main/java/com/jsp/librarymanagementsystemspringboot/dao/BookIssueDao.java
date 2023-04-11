@@ -76,6 +76,7 @@ public class BookIssueDao {
 			Optional<BookIssue> optional = bookIssueRepository.findById(book.getBookNumber());
 
 			if (optional.isPresent()) {
+				bookIssue = optional.get();
 				bookIssueRepository.delete(bookIssue);
 				return bookIssue;
 			} else {
@@ -109,6 +110,8 @@ public class BookIssueDao {
 
 				int todayDateValue = LocalDate.now().getDayOfMonth();
 
+				todayDateValue = 25;
+				
 				if (todayDateValue > subDateValue) {
 					int finalDateValue = todayDateValue - subDateValue;
 					bookIssue.setFine(finalDateValue);
