@@ -13,6 +13,11 @@ import com.jsp.librarymanagementsystemspringboot.dto.Admin;
 import com.jsp.librarymanagementsystemspringboot.dto.ResponseStructure;
 import com.jsp.librarymanagementsystemspringboot.service.AdminService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,6 +36,58 @@ public class AdminController extends HttpServlet{
 	AdminService adminService;
 
 	@PostMapping(value = "/saveAdmin")
+	@Operation(
+			description = "save Admin Details",
+			responses = {
+					@ApiResponse(
+							responseCode = "200",
+							description = "Successfully Admin Data Added",
+							content = @Content(
+									mediaType = "application/json",
+									examples = {
+											@ExampleObject(
+													
+													value = "{\"code\":200,\"Status\":ok!,\"Message\":\"Successfully Data Added\"}"
+													
+											)
+								
+									}
+							)
+					),
+					@ApiResponse(
+							responseCode = "400",
+							description = "Bad Request!",
+							content = @Content(
+									mediaType = "application/json",
+									examples = {
+											@ExampleObject(
+													
+													value = "{\"code\":400,\"Status\":Bad Request!,\"Message\":\"Bad Request!\"}"
+													
+											)
+								
+									}
+							)
+					),
+					
+					@ApiResponse(
+							responseCode = "500",
+							description = "Internel Server Error!",
+							content = @Content(
+									mediaType = "application/json",
+									examples = {
+											@ExampleObject(
+													
+													value = "{\"code\":500,\"Status\":Internel Server Error!,\"Message\":\"Internel Server Error!\"}"
+													
+											)
+								
+									}
+							)
+					)
+					
+			}
+			)
 	public ResponseStructure<Admin> saveAdmin(@RequestBody Admin admin) {
 		return adminService.saveAdmin(admin);
 	}
